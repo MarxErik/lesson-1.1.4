@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class Main {
     private final static UserService userService = new UserServiceImpl();
-    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
 
     static {
         String path = Objects.requireNonNull(Main.class.getClassLoader()

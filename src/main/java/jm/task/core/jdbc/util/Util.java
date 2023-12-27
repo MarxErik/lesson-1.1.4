@@ -14,7 +14,7 @@ public class Util {
     private static final String DB_USERNAME = "root";
     private static final String DB_PASSWORD = "KJnfkjfnwkbhw2522";
     private static Connection connection = null;
-    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(Util.class.getName());
 
     static {
         String path = Objects.requireNonNull(Util.class.getClassLoader()
