@@ -34,4 +34,6 @@ build/
 
 ### SRC ##
 src/
+
+### LOGGER ##
 log.txt
