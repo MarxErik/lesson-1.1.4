@@ -3,9 +3,20 @@ import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
 import jm.task.core.jdbc.service.UserServiceImpl;
 
+import java.util.Objects;
+import java.util.logging.Logger;
+
 
 public class Main {
     private final static UserService userService = new UserServiceImpl();
+    private static final Logger logger = Logger.getLogger(UserServiceImpl.class.getName());
+
+    static {
+        String path = Objects.requireNonNull(Main.class.getClassLoader()
+                .getResource("logging.properties")).getFile();
+        System.setProperty("java.util.logging.config.file", path);
+    }
+
     public static void main(String[] args) {
 
         userService.createUsersTable();
@@ -16,7 +27,8 @@ public class Main {
         userService.saveUser("Гриша", "Гришнов", (byte) 14);
 
         for (User user: userService.getAllUsers()){
-            System.out.println(user);
+            logger.info(String.valueOf(user));
+//            System.out.println(user);
         }
 
         userService.cleanUsersTable();
