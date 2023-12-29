@@ -1,5 +1,7 @@
 package jm.task.core.jdbc.dao;
+
 import jm.task.core.jdbc.model.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +10,14 @@ import static jm.task.core.jdbc.util.Util.getConection;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final Connection connection = getConection();
-    final private String SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS USER" +
-            "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
+    final private String SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS USER"
+            + "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
     final private String SQL_DROP_USERS_TABLE = "DROP TABLE IF EXISTS USER";
     final private String SQL_SAVE_USER = "INSERT INTO USER (name, lastName, age) VALUES (?, ?, ?)";
     final private String SQL_REMOVE_USER_BY_ID = "DELETE FROM USER WHERE ID = ?";
     final private String SQL_GET_ALL_USERS = "SELECT ID, NAME, LASTNAME, AGE FROM USER";
     final private String SQL_CLEAN_USERS_TABLE = "TRUNCATE TABLE USER";
-    private List <User> userList = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
 
     public UserDaoJDBCImpl() {
     }
@@ -66,8 +68,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(SQL_GET_ALL_USERS)) {
+        try (Statement statement = connection.createStatement(); ResultSet resultSet = statement.executeQuery(SQL_GET_ALL_USERS)) {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("ID"));

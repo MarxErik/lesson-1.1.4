@@ -15,6 +15,7 @@ public class User {
     private String lastName;
     @Column
     private Byte age;
+
     public User() {
 
     }
@@ -63,7 +64,7 @@ public class User {
                 "id= " + id +
                 ", name= '" + name + '\'' +
                 ", lastName= '" + lastName + '\'' +
-                ", age= " + age ;
+                ", age= " + age;
     }
 
     @Override
