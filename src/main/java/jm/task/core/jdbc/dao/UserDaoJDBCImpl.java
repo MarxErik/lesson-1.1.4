@@ -8,14 +8,14 @@ import static jm.task.core.jdbc.util.Util.getConection;
 
 public class UserDaoJDBCImpl implements UserDao {
     private static final Connection connection = getConection();
-    List <User> userList = new ArrayList<>();
-    final private String sqlCreateUsersTable = "CREATE TABLE IF NOT EXISTS USER" +
+    final private String SQL_CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS USER" +
             "(id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(255), lastName VARCHAR(255), age TINYINT)";
-    final private String sqlDropUsersTable = "DROP TABLE IF EXISTS USER";
-    final  private String sqlSaveUser = "INSERT INTO USER (name, lastName, age) VALUES (?, ?, ?)";
-    final private String sqlRemoveUserById = "DELETE FROM USER WHERE ID = ?";
-    final private String sqlGetAllUsers = "SELECT ID, NAME, LASTNAME, AGE FROM USER";
-    final private String sqlCleanUsersTable = "TRUNCATE TABLE USER";
+    final private String SQL_DROP_USERS_TABLE = "DROP TABLE IF EXISTS USER";
+    final private String SQL_SAVE_USER = "INSERT INTO USER (name, lastName, age) VALUES (?, ?, ?)";
+    final private String SQL_REMOVE_USER_BY_ID = "DELETE FROM USER WHERE ID = ?";
+    final private String SQL_GET_ALL_USERS = "SELECT ID, NAME, LASTNAME, AGE FROM USER";
+    final private String SQL_CLEAN_USERS_TABLE = "TRUNCATE TABLE USER";
+    private List <User> userList = new ArrayList<>();
 
     public UserDaoJDBCImpl() {
     }
@@ -23,7 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void createUsersTable() {
         try (Statement Statement = connection.createStatement()) {
-            Statement.executeUpdate(sqlCreateUsersTable);
+            Statement.executeUpdate(SQL_CREATE_USERS_TABLE);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -32,7 +32,7 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void dropUsersTable() {
         try (Statement Statement = connection.createStatement()) {
-            Statement.executeUpdate(sqlDropUsersTable);
+            Statement.executeUpdate(SQL_DROP_USERS_TABLE);
             connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -41,12 +41,11 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlSaveUser)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER)) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, lastName);
             preparedStatement.setByte(3, age);
-
             preparedStatement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
@@ -56,7 +55,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     @Override
     public void removeUserById(long id) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlRemoveUserById)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_REMOVE_USER_BY_ID)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
             connection.commit();
@@ -68,7 +67,7 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sqlGetAllUsers)) {
+             ResultSet resultSet = statement.executeQuery(SQL_GET_ALL_USERS)) {
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("ID"));
@@ -86,7 +85,7 @@ public class UserDaoJDBCImpl implements UserDao {
     @Override
     public void cleanUsersTable() {
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(sqlCleanUsersTable);
+            statement.executeUpdate(SQL_CLEAN_USERS_TABLE);
             connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
